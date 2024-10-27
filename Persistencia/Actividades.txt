@@ -1,0 +1,2 @@
+Crear proyecto,[Ljava.lang.String;@4bf558aa,5,s,1,Tarea
+claros,medibles,alcanzable,5,s,1,Tarea
