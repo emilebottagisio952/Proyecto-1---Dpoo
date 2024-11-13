@@ -27,6 +27,17 @@ public class ConsolaEstudiante {
         this.RC = new ProcesamientoResena();
         this.input = new Scanner(System.in);
     }
+
+	public static void main(String[] args){
+        ConsolaEstudiante ConsolaEstudiante = new ConsolaEstudiante();
+        try {
+            ConsolaEstudiante.mostrarMenu(); 
+        }catch(IOException e) {
+            System.err.println("Error al ejecutar la consola" +e.getMessage());
+        }finally {
+            ConsolaEstudiante.input.close();
+        }   
+    }
     public void mostrarMenu() throws IOException{
         int respuesta; 
         do {

@@ -1,6 +1,9 @@
 package consola;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 import procesamiento.ProcesamientoActividad;
@@ -9,7 +12,7 @@ import procesamiento.ProcesamientoLearningPath;
 import procesamiento.ProcesamientoRegistros;
 import procesamiento.ProcesamientoResena;
 
-public class consolaProfesor{
+public class ConsolaProfesor{
     private ProcesamientoActividad AC;
     private ProcesamientoProfesor EP;
     private ProcesamientoLearningPath LPC;
@@ -26,6 +29,17 @@ public class consolaProfesor{
         this.RGC = new ProcesamientoRegistros();
         this.RC = new ProcesamientoResena();
         this.input = new Scanner(System.in);
+    }
+
+    public static void main(String[] args){
+        ConsolaProfesor consolaProfesor = new ConsolaProfesor();
+        try {
+            consolaProfesor.mostrarMenu(); 
+        }catch(IOException e) {
+            System.err.println("Error al ejecutar la consola" +e.getMessage());
+        }finally {
+            consolaProfesor.input.close();
+        }   
     }
     public void mostrarMenu() throws IOException{
         int respuesta; 
@@ -92,7 +106,7 @@ public class consolaProfesor{
 			}
 		} while (respuesta != 13);
 	}
-}
+
 private void CrearResena() {
     System.out.println("Ingrese el id de la actividad que quiere reseñar");
     int id = input.nextInt();
@@ -157,6 +171,36 @@ private void CrearActividad() {
         
     }
 }
+private void CrearActividadTarea(String descripcion, String objetivoString, String nivelDificultad, int duracion,
+			String fechaLimite, String tipo, List<Integer> idActividadesPrevias, List<Integer>idActividadesSeguimiento) {
+		    AC.CrearActividadTarea(loginActual, tipo, descripcion, objetivoString, nivelDificultad, duracion, idActividadesPrevias, fechaLimite, idActividadesSeguimiento);
+		    System.out.println("Actividad creada exitosamente!");
+	}
+    private void CrearActividadRecurso(String descripcion, String objetivoString, String nivelDificultad, int duracion,
+        String fechaLimite, String tipo, List<Integer> idActividadesPrevias, List<Integer>idActividadesSeguimiento) {
+
+        System.out.println("Digite la url del recurso que quiere mostrar");
+        String url = input.nextLine();
+
+        AC.CrearActividadRecurso(loginActual, tipo, descripcion, objetivoString, nivelDificultad, duracion, idActividadesPrevias, fechaLimite, idActividadesSeguimiento, url);
+        System.out.println("Actividad creada exitosamente!");
+}
+private void CrearActividadEncuesta(String descripcion, String objetivoString, String nivelDificultad, int duracion,
+			String fechaLimite, String tipo, List<Integer> idActividadesPrevias, List<Integer>idActividadesSeguimiento) {
+		
+		String pregunta;
+		List<String> preguntas = new ArrayList<>();
+		System.out.println("Ingrese las preguntas que quiere realizar en el examen una por una, escriba N cuando quiera parar.");
+		do {
+			pregunta = input.nextLine();
+			if (!(pregunta.equals("N"))) {
+				preguntas.add(pregunta);
+			}
+			
+		} while (!(pregunta.equals("N")));
+		AC.CrearActividadEncuesta(loginActual, tipo, descripcion, objetivoString, nivelDificultad, duracion, idActividadesPrevias, fechaLimite, idActividadesSeguimiento, preguntas);
+		System.out.println("Actividad creada exitosamente!");
+	}
 private void EditarActividad() {
     if (!(rolActual.equals("Profesor"))) {
         System.out.println("\nNo tiene permisos para realizar esta accion");
@@ -210,6 +254,155 @@ private void EditarActividad() {
             System.out.println("Usted no es el creador de esta actividad, no puede editarla a menos que la clone");
         }
     }
+}
+    private void EditarActividadTarea(String descripcion, String objetivoString, String nivelDificultad, int duracion,
+			String fechaLimite, String tipo, List<Integer> idActividadesPrevias, List<Integer>idActividadesSeguimiento, int idActividad) {
+		    AC.CrearActividadTarea(loginActual, tipo, descripcion, objetivoString, nivelDificultad, duracion, idActividadesPrevias, fechaLimite, idActividadesSeguimiento);
+		    System.out.println("Actividad creada exitosamente!");
+	}
+    private void EditarActividadRecurso(String descripcion, String objetivoString, String nivelDificultad, int duracion,
+        String fechaLimite, String tipo, List<Integer> idActividadesPrevias, List<Integer>idActividadesSeguimiento, int idActividad) {
+
+        System.out.println("Digite la url del recurso que quiere mostrar");
+        String url = input.nextLine();
+
+        AC.CrearActividadRecurso(loginActual, tipo, descripcion, objetivoString, nivelDificultad, duracion, idActividadesPrevias, fechaLimite, idActividadesSeguimiento, url);
+        System.out.println("Actividad creada exitosamente!");
+}
+private void EditarActividadEncuesta(String descripcion, String objetivoString, String nivelDificultad, int duracion,
+			String fechaLimite, String tipo, List<Integer> idActividadesPrevias, List<Integer>idActividadesSeguimiento, int idActividad) {
+		
+		String pregunta;
+		List<String> preguntas = new ArrayList<>();
+		System.out.println("Ingrese las preguntas que quiere realizar en el examen una por una, escriba N cuando quiera parar.");
+		do {
+			pregunta = input.nextLine();
+			if (!(pregunta.equals("N"))) {
+				preguntas.add(pregunta);
+			}
+			
+		} while (!(pregunta.equals("N")));
+		AC.CrearActividadEncuesta(loginActual, tipo, descripcion, objetivoString, nivelDificultad, duracion, idActividadesPrevias, fechaLimite, idActividadesSeguimiento, preguntas);
+		System.out.println("Actividad creada exitosamente!");
+	}
+    private void EditarActividadQuiz(String descripcion, String objetivoString, String nivelDificultad, int duracion,
+    String fechaLimite, String tipo, List<Integer> idActividadesPrevias, List<Integer>idActividadesSeguimiento, int idActividad) {
+
+String pregunta, opcion1, opcion2, opcion3, opcion4, explicacion1, explicacion2, explicacion3, explicacion4;
+int correcta;
+
+HashMap<String, HashMap<String, String>> preguntas = new HashMap<>();
+ArrayList<Integer> correctas = new ArrayList<>();
+System.out.println("Ingrese la nota minima de la actividad");
+float notaMinima = input.nextFloat();
+input.nextLine();
+System.out.println("Ingrese las preguntas que quiere realizar en el examen una por una, escriba N cuando quiera parar.");
+do {
+    System.out.println("Ingrese la pregunta:");
+    pregunta = input.nextLine();
+    if (!(pregunta.equals("N"))) {
+        HashMap<String, String> opciones = new HashMap<>();
+        
+        System.out.println("Ingrese la primera opcion:");
+        opcion1 = input.nextLine();
+        
+        System.out.println("Ingrese la explicacion de la primera opcion:");
+        explicacion1 = input.nextLine();
+        opciones.put(opcion1, explicacion1);
+        
+        System.out.println("Ingrese la segunda opcion:");
+        opcion2 = input.nextLine();
+        
+        System.out.println("Ingrese la explicacion de la segunda opcion:");
+        explicacion2 = input.nextLine();
+        opciones.put(opcion2, explicacion2);
+
+        System.out.println("Ingrese la tercera opcion:");
+        opcion3 = input.nextLine();
+        
+        System.out.println("Ingrese la explicacion de la tercera opcion:");
+        explicacion3 = input.nextLine();
+        opciones.put(opcion3, explicacion3);
+        
+        System.out.println("Ingrese la cuarta opcion:");
+        opcion4 = input.nextLine();
+        
+        System.out.println("Ingrese la explicacion de la cuarta opcion:");
+        explicacion4 = input.nextLine();
+        opciones.put(opcion4, explicacion4);
+        
+        System.out.println("Ingrese el numero de la opcion correcta:");
+        correcta = input.nextInt();
+        input.nextLine();
+        correctas.add(correcta);
+        
+        preguntas.put(pregunta, opciones);
+    }
+} while (!(pregunta.equals("N")));
+AC.CrearActividadQuiz(loginActual, tipo, descripcion, objetivoString, nivelDificultad, duracion, idActividadesPrevias, fechaLimite, idActividadesSeguimiento, preguntas, correctas, notaMinima);
+System.out.println("Actividad creada exitosamente!");
+}
+private void EditarActividadExamen(String descripcion, String objetivoString, String nivelDificultad, int duracion,
+			String fechaLimite, String tipo, List<Integer> idActividadesPrevias, List<Integer>idActividadesSeguimiento, int idActividad) {
+		String pregunta;
+		List<String> preguntas = new ArrayList<>();
+		System.out.println("Ingrese la nota minima de la actividad");
+		float notaMinima = input.nextFloat();
+		input.nextLine();
+		System.out.println("Ingrese las preguntas que quiere realizar en el examen una por una, escriba N cuando quiera parar.");
+		do {
+			pregunta = input.nextLine();
+			if (!(pregunta.equals("N"))) {
+				preguntas.add(pregunta);
+			}
+			
+		} while (!(pregunta.equals("N")));
+		AC.CrearActividadExamen(loginActual, tipo, descripcion, objetivoString, nivelDificultad, duracion, idActividadesPrevias, fechaLimite, idActividadesSeguimiento, preguntas, notaMinima);
+		System.out.println("Actividad creada exitosamente!");
+	}
+private String SeleccionadorTipo() {
+    int respuesta;
+    do {
+        System.out.println("\nDigite el numero del tipo de actividad que quiere crear.\n"
+                + "1. ActividadTarea\n"
+                + "2. ActividadRecursoEducativo\n"
+                + "3. ActividadEncuesta\n"
+                + "4. ActividadQuiz\n"
+                + "5. ActividadExamen");
+        respuesta = input.nextInt();
+        input.nextLine();
+        if (respuesta < 1 || respuesta > 5) {
+            System.out.println("El numero que ha ingresado no esta en las opciones disponibles. Intente de nuevo.");
+        }
+    } while (respuesta < 1 || respuesta > 5);
+    
+    switch (respuesta) {
+        case 1:
+            return "Tarea";
+        case 2:
+            return "RecursoEducativo";
+        case 3:
+            return "Encuesta";
+        case 4:
+            return "Quiz";
+        case 5:
+            return "Examen";
+    }
+    return "";
+}
+private ArrayList<Integer> SeleccionadorActividades() {
+    int id;
+    ArrayList<Integer> ids = new ArrayList<>();
+    System.out.println("Ingrese las id de las actividades que quiere seleccionar, ingrese 0 para terminar.");
+    do {
+        id = input.nextInt();
+        input.nextLine();
+        if (id != 0) {
+            ids.add(id);
+        }
+    } while (id != 0);
+    
+    return ids;
 }
 private void CrearLearningPath() {
     if (!(rolActual.equals("Profesor"))) {
