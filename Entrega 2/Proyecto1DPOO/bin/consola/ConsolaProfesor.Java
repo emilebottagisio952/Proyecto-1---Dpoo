@@ -79,18 +79,18 @@ public class consolaProfesor{
 					break;
 
                 case 10:
-                VerLearningPaths();
+                SalvarDatos();
                     break;
 
                 case 11:
-                VerLearningPaths();
+                IngresarProfesor();
                     break;
 
                 case 12:
                 VerLearningPaths();
                     break;
 			}
-		} while (respuesta != 9);
+		} while (respuesta != 13);
 	}
 }
 private void CrearResena() {
@@ -312,6 +312,26 @@ private void SalvarDatos() throws IOException {
     LPC.guardarLPEnArchivo("learningPaths.txt");
     RC.guardarResenasEnArchivo("resenas.txt");
     AC.guardarActividadesEnArchivo("Actividades.txt");
+}
+private void IngresarProfesor() {
+		
+    System.out.println("\nIngrese su login:");
+    String login = input.nextLine();
+    
+    System.out.println("Ingrese su password:");
+    String password = input.nextLine();
+    
+    if (!(PC.ExisteProfesor(login))) {
+        System.out.println("El login ingresado no esta registrado.");
+    } else {
+        if (PC.IngresoProfesor(login, password)) {
+             this.loginActual = login;
+             this.rolActual = "Profesor";
+             System.out.println("Bienvenido.");
+        } else {
+             System.out.println("Contraseña incorrecta.");
+        }
+    }
 }
 
   
