@@ -34,6 +34,7 @@ public class ConsolaProfesor{
     public static void main(String[] args){
         ConsolaProfesor consolaProfesor = new ConsolaProfesor();
         try {
+            
             consolaProfesor.mostrarMenu(); 
         }catch(IOException e) {
             System.err.println("Error al ejecutar la consola" +e.getMessage());
@@ -360,6 +361,84 @@ private void EditarActividadExamen(String descripcion, String objetivoString, St
 		AC.CrearActividadExamen(loginActual, tipo, descripcion, objetivoString, nivelDificultad, duracion, idActividadesPrevias, fechaLimite, idActividadesSeguimiento, preguntas, notaMinima);
 		System.out.println("Actividad creada exitosamente!");
 	}
+
+    private void CrearActividadQuiz(String descripcion, String objetivoString, String nivelDificultad, int duracion,
+    String fechaLimite, String tipo, List<Integer> idActividadesPrevias, List<Integer>idActividadesSeguimiento) {
+
+String pregunta, opcion1, opcion2, opcion3, opcion4, explicacion1, explicacion2, explicacion3, explicacion4;
+int correcta;
+
+HashMap<String, HashMap<String, String>> preguntas = new HashMap<>();
+ArrayList<Integer> correctas = new ArrayList<>();
+System.out.println("Ingrese la nota minima de la actividad");
+float notaMinima = input.nextFloat();
+input.nextLine();
+System.out.println("Ingrese las preguntas que quiere realizar en el examen una por una, escriba N cuando quiera parar.");
+do {
+    System.out.println("Ingrese la pregunta:");
+    pregunta = input.nextLine();
+    if (!(pregunta.equals("N"))) {
+        HashMap<String, String> opciones = new HashMap<>();
+        
+        System.out.println("Ingrese la primera opcion:");
+        opcion1 = input.nextLine();
+        
+        System.out.println("Ingrese la explicacion de la primera opcion:");
+        explicacion1 = input.nextLine();
+        opciones.put(opcion1, explicacion1);
+        
+        System.out.println("Ingrese la segunda opcion:");
+        opcion2 = input.nextLine();
+        
+        System.out.println("Ingrese la explicacion de la segunda opcion:");
+        explicacion2 = input.nextLine();
+        opciones.put(opcion2, explicacion2);
+
+        System.out.println("Ingrese la tercera opcion:");
+        opcion3 = input.nextLine();
+        
+        System.out.println("Ingrese la explicacion de la tercera opcion:");
+        explicacion3 = input.nextLine();
+        opciones.put(opcion3, explicacion3);
+        
+        System.out.println("Ingrese la cuarta opcion:");
+        opcion4 = input.nextLine();
+        
+        System.out.println("Ingrese la explicacion de la cuarta opcion:");
+        explicacion4 = input.nextLine();
+        opciones.put(opcion4, explicacion4);
+        
+        System.out.println("Ingrese el numero de la opcion correcta:");
+        correcta = input.nextInt();
+        input.nextLine();
+        correctas.add(correcta);
+        
+        preguntas.put(pregunta, opciones);
+    }
+} while (!(pregunta.equals("N")));
+AC.CrearActividadQuiz(loginActual, tipo, descripcion, objetivoString, nivelDificultad, duracion, idActividadesPrevias, 
+        fechaLimite, idActividadesSeguimiento, preguntas, correctas, notaMinima);
+System.out.println("Actividad creada exitosamente!");
+}
+
+private void CrearActividadExamen(String descripcion, String objetivoString, String nivelDificultad, int duracion,
+			String fechaLimite, String tipo, List<Integer> idActividadesPrevias, List<Integer>idActividadesSeguimiento) {
+		String pregunta;
+		List<String> preguntas = new ArrayList<>();
+		System.out.println("Ingrese la nota minima de la actividad");
+		float notaMinima = input.nextFloat();
+		input.nextLine();
+		System.out.println("Ingrese las preguntas que quiere realizar en el examen una por una, escriba N cuando quiera parar.");
+		do {
+			pregunta = input.nextLine();
+			if (!(pregunta.equals("N"))) {
+				preguntas.add(pregunta);
+			}
+			
+		} while (!(pregunta.equals("N")));
+		AC.CrearActividadExamen(loginActual, tipo, descripcion, objetivoString, nivelDificultad, duracion, idActividadesPrevias, fechaLimite, idActividadesSeguimiento, preguntas, notaMinima);
+		System.out.println("Actividad creada exitosamente!");
+	}
 private String SeleccionadorTipo() {
     int respuesta;
     do {
@@ -458,6 +537,29 @@ private void EditarLearningPath() {
         System.out.println("Learning Path editado exitosamente!");
     }
 }
+private HashMap<Integer, Boolean> SeleccionadorActividadesLearningPath() {
+    int id;
+    Boolean obligatoria;
+    HashMap<Integer, Boolean> ids = new HashMap<>();
+    System.out.println("Ingrese las id de las actividades que quiere seleccionar, ingrese 0 para terminar.");
+    do {
+        System.out.println("Ingrese id: ");
+        id = input.nextInt();
+        input.nextLine();
+        if (id != 0) {
+            System.out.println("Digite 1 si la actividad es obligatoria y 0 si no lo es.");
+            int resp = input.nextInt();
+            if (resp == 1) {
+                obligatoria = true;
+            } else {
+                obligatoria = false;
+            }
+            ids.put(id, obligatoria);
+        }
+    } while (id != 0);
+    
+    return ids;
+}
 private void VerActividades() {
     AC.ImprimirActividades();
 }
@@ -468,13 +570,7 @@ private void VerResenasActividad() {
     
     RC.RevisarResenas(id);
 }
-private void VerResenasActividad() {
-    System.out.println("Digite la id de la actividad que quiere revisar: ");
-    int id = input.nextInt();
-    input.nextLine();
-    
-    RC.RevisarResenas(id);
-}
+
 private void VerLearningPaths() {
     LPC.ImprimirLearningPaths();
 }
@@ -487,21 +583,9 @@ private void RevisarProgreso() {
     input.nextLine();
     RGC.MostrarProgreso(idLP, login);
 }
-private void RevisarProgreso() {
-    String login;
-    if (rolActual.equals("Estudiante")) {
-        login = loginActual;
-    } else {
-        System.out.println("Ingrese el login del estudiante que quiere revisar: ");
-        login = input.nextLine();
-    }
-    System.out.println("Ingrese el id del learning path que quiere revisar");
-    int idLP = input.nextInt();
-    input.nextLine();
-    RGC.MostrarProgreso(idLP, login);
-}
+
 private void SalvarDatos() throws IOException {
-    EC.guardarEstudiantesEnArchivo("estudiantes.txt");
+    EP.guardarProfesoresEnArchivo("profesores.txt");
     LPC.guardarLPEnArchivo("learningPaths.txt");
     RC.guardarResenasEnArchivo("resenas.txt");
     AC.guardarActividadesEnArchivo("Actividades.txt");
@@ -514,10 +598,10 @@ private void IngresarProfesor() {
     System.out.println("Ingrese su password:");
     String password = input.nextLine();
     
-    if (!(PC.ExisteProfesor(login))) {
+    if (!(EP.ExisteProfesor(login))) {
         System.out.println("El login ingresado no esta registrado.");
     } else {
-        if (PC.IngresoProfesor(login, password)) {
+        if (EP.IngresoProfesor(login, password)) {
              this.loginActual = login;
              this.rolActual = "Profesor";
              System.out.println("Bienvenido.");
