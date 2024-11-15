@@ -21,21 +21,25 @@ public class ConsolaProfesor{
 	private Scanner input;
 	private String loginActual;
 	private String rolActual;
+    private static Consola consola = new Consola();
+    
+        public ConsolaProfesor (){
+            this.AC = new ProcesamientoActividad();
+            this.EP = new ProcesamientoProfesor();
+            this.LPC = new ProcesamientoLearningPath();
+            this.RGC = new ProcesamientoRegistros();
+            this.RC = new ProcesamientoResena();
+            this.input = new Scanner(System.in);
+        }
+    
+        public static void main(String[] args){
+            ConsolaProfesor consolaProfesor = new ConsolaProfesor();
+            try {
+                System.out.println("Datos cargandose al sistema ....");
 
-    public ConsolaProfesor (){
-        this.AC = new ProcesamientoActividad();
-        this.EP = new ProcesamientoProfesor();
-        this.LPC = new ProcesamientoLearningPath();
-        this.RGC = new ProcesamientoRegistros();
-        this.RC = new ProcesamientoResena();
-        this.input = new Scanner(System.in);
-    }
-
-    public static void main(String[] args){
-        ConsolaProfesor consolaProfesor = new ConsolaProfesor();
-        try {
-            
-            consolaProfesor.mostrarMenu(); 
+                System.out.println("Datos cargados ....");
+                
+                consolaProfesor.mostrarMenu(); 
         }catch(IOException e) {
             System.err.println("Error al ejecutar la consola" +e.getMessage());
         }finally {
@@ -46,7 +50,7 @@ public class ConsolaProfesor{
         int respuesta; 
         do {
 			System.out.println("\nDigite el numero de la opcion que quiere usar.\n"
-					+ "1. Crear reseña\n"
+					+ "1. Ingresar como profesor\n"
                     + "2. Crear actividad\n"
                     + "3. Editar actividad\n"
                     + "4. Crear learning path\n"
@@ -56,7 +60,7 @@ public class ConsolaProfesor{
 					+ "8. Ver learning paths\n"
 					+ "9. Revisar progreso estudiante\n"
 					+ "10. Salvar datos\n"
-                    + "11. Ingresar como profesor\n"
+                    + "11. Crear reseña\n"
 					+ "12. Salir");
 			respuesta = input.nextInt();
 			input.nextLine();
@@ -65,7 +69,14 @@ public class ConsolaProfesor{
 			}
 			switch (respuesta) {
 				case 1:
-					CrearResena();
+                    try {
+                        EP.cargarProfesoresDesdeArchivo("profesores.txt");
+                        LPC.cargarLPDesdeArchivo("learningPaths.txt");
+                        RC.cargarResenasDesdeArchivo("resenas.txt");
+                    } catch (IOException e) {
+                        System.err.println("Error al cargar los datos: " + e.getMessage());
+                    }
+                    IngresarProfesor();
 					break;
 				case 2:
 					CrearActividad();
@@ -98,7 +109,7 @@ public class ConsolaProfesor{
                     break;
 
                 case 11:
-                IngresarProfesor();
+                CrearResena();
                     break;
 
                 case 12:
