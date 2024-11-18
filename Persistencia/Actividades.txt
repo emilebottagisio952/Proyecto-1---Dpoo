@@ -1,2 +1,2 @@
-Crear proyecto,[Ljava.lang.String;@4bf558aa,5,s,1,Tarea
-claros,medibles,alcanzable,5,s,1,Tarea
+
+fnslfms;5;Emile;4;Tarea;Ljava.lang.String;@3b95a09c;17/11/2024;null;0.0

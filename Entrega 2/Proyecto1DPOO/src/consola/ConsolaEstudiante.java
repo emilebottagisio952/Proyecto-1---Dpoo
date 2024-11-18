@@ -42,6 +42,7 @@ public class ConsolaEstudiante {
         int respuesta; 
         do {
 			System.out.println("\nDigite el numero de la opcion que quiere usar.\n"
+					+"0.Ingresar como estudiante\n"
 					+ "1. Crear reseña\n"
 					+ "2. Ver actividades\n"
 					+ "3. Ver reseñas de una actividad\n"
@@ -53,10 +54,21 @@ public class ConsolaEstudiante {
 					+ "9. Salir");
 			respuesta = input.nextInt();
 			input.nextLine();
-			if (respuesta < 1 || respuesta > 15) {
+			if (respuesta < 0 || respuesta > 15) {
 				System.out.println("El numero que ha ingresado no esta en las opciones disponibles. Intente de nuevo.");
 			}
 			switch (respuesta) {
+				case 0:
+				try {
+					EC.cargarEstudiantesDesdeArchivo("estudiantes.txt");
+					LPC.cargarLPDesdeArchivo("learningPaths.txt");
+					RC.cargarResenasDesdeArchivo("resenas.txt");
+					AC.cargarACDesdeArchivo("Actividades.txt");
+				} catch (IOException e) {
+					System.err.println("Error al cargar los datos: " + e.getMessage());
+				}
+					IngresarEstudiante();
+					break;
 				case 1:
 					CrearResena();
 					break;
@@ -83,6 +95,26 @@ public class ConsolaEstudiante {
 					break;
 			}
 		} while (respuesta != 9);
+	}
+
+	private void IngresarEstudiante() {
+		
+		System.out.println("Ingrese su login:");
+		String login = input.nextLine();
+		System.out.println("Ingrese su password:");
+		String password = input.nextLine();
+		
+		if (!(EC.ExisteEstudiante(login))) {
+			System.out.println("El login ingresado no esta registrado.");
+		} else {
+			if (EC.IngresoEstudiante(login, password)) {
+				 this.loginActual = login;
+				 this.rolActual = "Estudiante";
+				 System.out.println("Bienvenido.");
+			} else {
+				 System.out.println("Contraseña incorrecta.");
+			}
+		}
 	}
     private void CrearResena() {
 		System.out.println("Ingrese el id de la actividad que quiere reseñar");
@@ -123,7 +155,7 @@ public class ConsolaEstudiante {
 		System.out.println("Ingrese la id del learning path al cual pertenece la actividad");
 		int idLP = input.nextInt();
 		input.nextLine();
-		AC.ImprimirActividades(LPC.GetActividadesLP(idLP));
+		AC.ImprimirActividadesVarias(LPC.GetActividadesLP(idLP));
 		System.out.println("Digite el id de la actividad que quiere realizar");
 		int idA = input.nextInt();
 		input.nextLine();

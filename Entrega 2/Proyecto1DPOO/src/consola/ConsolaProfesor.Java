@@ -35,9 +35,7 @@ public class ConsolaProfesor{
         public static void main(String[] args){
             ConsolaProfesor consolaProfesor = new ConsolaProfesor();
             try {
-                System.out.println("Datos cargandose al sistema ....");
 
-                System.out.println("Datos cargados ....");
                 
                 consolaProfesor.mostrarMenu(); 
         }catch(IOException e) {
@@ -73,6 +71,7 @@ public class ConsolaProfesor{
                         EP.cargarProfesoresDesdeArchivo("profesores.txt");
                         LPC.cargarLPDesdeArchivo("learningPaths.txt");
                         RC.cargarResenasDesdeArchivo("resenas.txt");
+                        AC.cargarACDesdeArchivo("Actividades.txt");
                     } catch (IOException e) {
                         System.err.println("Error al cargar los datos: " + e.getMessage());
                     }
