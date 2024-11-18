@@ -69,6 +69,7 @@ public class Consola {
                         PC.cargarProfesoresDesdeArchivo("profesores.txt");
                         LPC.cargarLPDesdeArchivo("learningPaths.txt");
                         RC.cargarResenasDesdeArchivo("resenas.txt");
+						//AC.cargarACDesdeArchivo("Actividades.txt");
                     } catch (IOException e) {
                         System.err.println("Error al cargar los datos: " + e.getMessage());
                     }
