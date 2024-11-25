@@ -75,13 +75,10 @@ public class ProcesamientoActividadTest {
         String loginCreador = "usuario2";
         int idActividad = procesamiento.CrearActividadTarea(loginCreador, "Tarea", "Tarea de Física", "Mecánica",
                 "Fácil", 30, new ArrayList<>(), "2024-11-30", new ArrayList<>(), 0);
-
         // Verificar con el creador correcto
         assertTrue(procesamiento.VerificarCreador(idActividad, "usuario2"), "El creador debe ser verificado correctamente");
-
         // Verificar con un creador incorrecto
         assertFalse(procesamiento.VerificarCreador(idActividad, "usuario3"), "El creador no debe ser verificado incorrectamente");
-
         // Verificar con un ID inexistente
         assertFalse(procesamiento.VerificarCreador(9999, "usuario2"), "Debe retornar falso para un ID inexistente");
     }
