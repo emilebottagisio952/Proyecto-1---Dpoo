@@ -20,6 +20,16 @@ public class ProcesamientoProfesor {
 		profesores.put(p.getLogin(), p);
 	}
 	
+	// (Tests) Getter para obtener el número de profesores
+    public int getNumeroProfesores() {
+        return profesores.size();
+    }
+
+    // (Tests) Getter para obtener un profesor por login
+    public Profesor getProfesor(String login) {
+        return profesores.get(login);
+    }
+	
 	public void MostrarProfesores() {
 		Set<String> logins = profesores.keySet();
 		Collection<Profesor> passwords = profesores.values();

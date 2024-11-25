@@ -6,5 +6,4 @@ public class PreguntaAbierta extends Pregunta {
 	public PreguntaAbierta(String textoPregunta) {
 		super(textoPregunta);
 	}
-
 }

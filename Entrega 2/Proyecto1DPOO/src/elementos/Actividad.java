@@ -3,43 +3,41 @@ package elementos;
 import java.util.List;
 
 public class Actividad {
-	
-	private String loginCreador;
-	private int id;
-	private String tipo;
-	private String descripcion;
-	private String[] objetivos;
-	private String nivelDificultad;
-	private int duracion;
-	private List<Actividad> actividadesPrevias;
-	private String fechaLimite;
-	private List<Actividad> actividadesSeguimiento;
-	private String url;
-	private List<PreguntaMultiple> preguntasMultiples;
-	private List<PreguntaAbierta> preguntasAbiertas;
-	private float notaMinima;
-	
-	//Constructor
-	public Actividad(String loginCreador, int id, String tipo, String descripcion, String[] objetivos,
-			String nivelDificultad, int duracion, List<Actividad> actividadesPrevias, String fechaLimite,
-			List<Actividad> actividadesSeguimiento, String url, List<PreguntaMultiple> preguntasMultiples,
-			List<PreguntaAbierta> preguntasAbiertas, float notaMinima) {
-		super();
-		this.loginCreador = loginCreador;
-		this.id = id;
-		this.tipo = tipo;
-		this.descripcion = descripcion;
-		this.objetivos = objetivos;
-		this.nivelDificultad = nivelDificultad;
-		this.duracion = duracion;
-		this.actividadesPrevias = actividadesPrevias;
-		this.fechaLimite = fechaLimite;
-		this.actividadesSeguimiento = actividadesSeguimiento;
-		this.url = url;
-		this.preguntasMultiples = preguntasMultiples;
-		this.preguntasAbiertas = preguntasAbiertas;
-		this.notaMinima = notaMinima;
-	}
+    private String loginCreador;
+    private int id;
+    private String tipo;
+    private String descripcion;
+    private String[] objetivos;
+    private String nivelDificultad;
+    private int duracion;
+    private List<Actividad> actividadesPrevias;
+    private String fechaLimite;
+    private List<Actividad> actividadesSeguimiento;
+    private String url;
+    private List<PreguntaMultiple> preguntasMultiples;
+    private List<PreguntaAbierta> preguntasAbiertas;
+    private float notaMinima;
+
+    // Constructor ajustado
+    public Actividad(String loginCreador, int id, String tipo, String descripcion, String[] objetivos,
+                     String nivelDificultad, int duracion, List<Actividad> actividadesPrevias, String fechaLimite,
+                     List<Actividad> actividadesSeguimiento, String url, List<PreguntaMultiple> preguntasMultiples,
+                     List<PreguntaAbierta> preguntasAbiertas, float notaMinima) {
+        this.loginCreador = loginCreador;
+        this.id = id;
+        this.tipo = tipo;
+        this.descripcion = descripcion;
+        this.objetivos = objetivos;
+        this.nivelDificultad = nivelDificultad;
+        this.duracion = duracion;
+        this.actividadesPrevias = actividadesPrevias;
+        this.fechaLimite = fechaLimite;
+        this.actividadesSeguimiento = actividadesSeguimiento;
+        this.url = url;
+        this.preguntasMultiples = preguntasMultiples;
+        this.preguntasAbiertas = preguntasAbiertas;
+        this.notaMinima = notaMinima;
+    }
 	
 	//Getters y Setters
 	public String getLoginCreador() {
