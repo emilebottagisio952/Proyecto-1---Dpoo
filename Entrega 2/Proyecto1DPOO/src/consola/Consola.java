@@ -611,7 +611,7 @@ public class Consola {
 	}
 	private void CrearActividadTarea(String descripcion, String objetivoString, String nivelDificultad, int duracion,
 			String fechaLimite, String tipo, List<Integer> idActividadesPrevias, List<Integer>idActividadesSeguimiento) {
-		AC.CrearActividadTarea(loginActual, tipo, descripcion, objetivoString, nivelDificultad, duracion, idActividadesPrevias, fechaLimite, idActividadesSeguimiento);
+		AC.CrearActividadTarea(loginActual, tipo, descripcion, objetivoString, nivelDificultad, duracion, idActividadesPrevias, fechaLimite, idActividadesSeguimiento, 0.0f);
 		System.out.println("Actividad creada exitosamente!");
 	}
 
@@ -717,7 +717,7 @@ public class Consola {
 	}
 	private void EditarActividadTarea(String descripcion, String objetivoString, String nivelDificultad, int duracion,
 			String fechaLimite, String tipo, List<Integer> idActividadesPrevias, List<Integer>idActividadesSeguimiento, int idActividad) {
-		AC.CrearActividadTarea(loginActual, tipo, descripcion, objetivoString, nivelDificultad, duracion, idActividadesPrevias, fechaLimite, idActividadesSeguimiento);
+		AC.CrearActividadTarea(loginActual, tipo, descripcion, objetivoString, nivelDificultad, duracion, idActividadesPrevias, fechaLimite, idActividadesSeguimiento, 0.0f);
 		System.out.println("Actividad creada exitosamente!");
 	}
 	

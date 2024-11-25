@@ -23,6 +23,10 @@ public class ProcesamientoRegistros {
 	public ProcesamientoRegistros() {
 		this.registrosLP = new HashMap<>();
 	}
+    // (Tests) Getter de registrosLP
+    public HashMap<Integer, ArrayList<RegistroLearningPath>> getRegistrosLP() {
+        return registrosLP;
+    }
 	
 	public void InscribirEstudiante(int idLP, String loginActual, ProcesamientoActividad AC, ProcesamientoLearningPath LPC) {
 		LocalDateTime fecha = LocalDateTime.now();

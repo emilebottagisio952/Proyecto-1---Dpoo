@@ -13,6 +13,10 @@ public class ProcesamientoResena {
 	public ProcesamientoResena() {
 		this.resenas = new ArrayList<>(); 
 	}
+    // (Tests) Getter para acceder a la lista de reseñas
+    public ArrayList<Resena> getResenas() {
+        return resenas;
+    }
 	
 	public void CrearResena(int id, String opinion, int rating, String loginAutor, String rolAutor) {
 		Resena r = new Resena(id, opinion, rating, loginAutor, rolAutor);

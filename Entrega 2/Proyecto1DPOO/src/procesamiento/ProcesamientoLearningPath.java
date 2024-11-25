@@ -17,6 +17,16 @@ public class ProcesamientoLearningPath {
 	    this.learningPaths = new HashMap<>();
 	}
 	
+    // (Tests) Getter para obtener el número de learning paths
+    public int getNumeroLearningPaths() {
+        return learningPaths.size();
+    }
+
+    // (Tests) Getter para obtener un learning path por ID
+    public LearningPath getLearningPath(int id) {
+        return learningPaths.get(id);
+    }
+	
 	public void ImprimirLearningPaths() {
 		Set<Integer> ids = learningPaths.keySet();
 		System.out.println("\nEstos son los learning paths disponibles (El numero a su lado corresponde a su id).");
