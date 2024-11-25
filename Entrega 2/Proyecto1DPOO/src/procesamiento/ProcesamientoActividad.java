@@ -3,10 +3,12 @@ package procesamiento;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.Set;
 
 import elementos.Actividad;
 import elementos.Estudiante;
+import elementos.LearningPath;
 import elementos.Opcion;
 import elementos.PreguntaAbierta;
 import elementos.PreguntaMultiple;
@@ -325,9 +328,7 @@ public void ImprimirActividadesVarias(ArrayList<Integer> ids) {
 		try (PrintWriter writer = new PrintWriter(new FileWriter(archivo, true))) { 
 
 			for (Actividad actividad : actividades.values()) {
-				writer.println(actividad.getDescripcion() + ";" + actividad.getDuracion() + ";" + actividad.getLoginCreador() + ";" + actividad.getNivelDificultad() + ";" + actividad.getTipo() + ";" + actividad.getObjetivos() + ";" + actividad.getActividadesPrevias() + ";" + actividad.getFechaLimite() + ";" + actividad.getActividadesSeguimiento() + ";" + actividad.getNotaMinima());
-				System.out.println(actividad.getDescripcion() + ";" + actividad.getDuracion() + ";" + actividad.getLoginCreador() + ";" + actividad.getNivelDificultad() + ";" + actividad.getTipo() + ";" + actividad.getObjetivos() + ";" + actividad.getActividadesPrevias() + ";" + actividad.getFechaLimite() + ";" + actividad.getActividadesSeguimiento() + ";" + actividad.getNotaMinima());
-
+				writer.println(actividad.getDescripcion() + ";" + actividad.getDuracion() + ";" + actividad.getLoginCreador() + ";" + actividad.getNivelDificultad() + ";" + actividad.getTipo() + ";" + actividad.getFechaLimite() + ";" +  actividad.getNotaMinima());
 			}
 			System.out.println("Datos guardados exitosamente en " + archivo.getAbsolutePath());
 		} catch (IOException e) {
@@ -335,4 +336,44 @@ public void ImprimirActividadesVarias(ArrayList<Integer> ids) {
 			throw e;
 		}
 	}
+	 public void cargarLPDesdeArchivo(String nombreArchivo) throws IOException {
+        if (actividades == null) {
+        	actividades = new HashMap<>();
+        }
+
+        String directorioRelativo = "Persistencia"; 
+        File archivo = new File(directorioRelativo, nombreArchivo);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parte = line.split(","); 
+                if (parte.length == 2) {
+                    String descripcion = parte[0];
+                    Integer duracion = Integer.parseInt(parte[1]);
+					String logInCreador = parte[2];
+					String dificultada = parte[3]; 
+					String tipo = parte[4];
+					String fecha = parte[5];
+					float notaMinima = Float.parseFloat(parte[6]);
+                    switch (tipo) {
+						case tipo:
+							
+							break;
+					
+						default:
+							break;
+					}
+                    
+                    LearningPath.put(LearningPath.size() + 1, new LearningPath(titulo, descripcion, dificultad, duracion, fechaCreacion, fechaModificacion, version, null, logInCreador)); // Crea un nuevo estudiante
+                }
+            }
+            System.out.println("Datos cargados exitosamente desde " + archivo.getAbsolutePath() + ". Total de estudiantes: " + learningPaths.size());
+        } catch (FileNotFoundException e) {
+            System.out.println("El archivo no existe. Se creará al guardar.");
+        } catch (IOException e) {
+            System.err.println("Error al cargar los datos: " + e.getMessage());
+            throw e;
+        }
+    }
 }
