@@ -352,23 +352,31 @@ public void ImprimirActividadesVarias(ArrayList<Integer> ids) {
                     String descripcion = parte[0];
                     Integer duracion = Integer.parseInt(parte[1]);
 					String logInCreador = parte[2];
-					String dificultada = parte[3]; 
+					String dificultad = parte[3]; 
 					String tipo = parte[4];
 					String fecha = parte[5];
 					float notaMinima = Float.parseFloat(parte[6]);
-                    switch (tipo) {
-						case tipo:
-							
+					switch (tipo) {
+						case "Tarea":
+							CrearActividadTarea(logInCreador,tipo,descripcion,null,dificultad,duracion,null,fecha,null);
 							break;
-					
-						default:
+						case "RecursoEducativo":
+							CrearActividadRecurso(logInCreador,tipo,descripcion,null,dificultad,duracion,null,fecha,null,"");
+							break;
+						case "Encuesta":
+							CrearActividadEncuesta(logInCreador,tipo,descripcion,null,dificultad,duracion,null,fecha,null,null);
+							break;
+						case "Quiz":
+							CrearActividadQuiz(logInCreador,tipo,descripcion,null,dificultad,duracion,null,fecha,null,null,null,notaMinima);
+							break;
+						case "Examen":
+							CrearActividadExamen(logInCreador,tipo,descripcion,null,dificultad,duracion,null,fecha,null,null,notaMinima);
 							break;
 					}
                     
-                    LearningPath.put(LearningPath.size() + 1, new LearningPath(titulo, descripcion, dificultad, duracion, fechaCreacion, fechaModificacion, version, null, logInCreador)); // Crea un nuevo estudiante
                 }
             }
-            System.out.println("Datos cargados exitosamente desde " + archivo.getAbsolutePath() + ". Total de estudiantes: " + learningPaths.size());
+            System.out.println("Datos cargados exitosamente desde " + archivo.getAbsolutePath() + ". Total de estudiantes: " + actividades.size());
         } catch (FileNotFoundException e) {
             System.out.println("El archivo no existe. Se creará al guardar.");
         } catch (IOException e) {
