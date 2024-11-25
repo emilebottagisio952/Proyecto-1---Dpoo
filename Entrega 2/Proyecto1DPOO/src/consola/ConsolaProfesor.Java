@@ -21,7 +21,7 @@ public class ConsolaProfesor{
 	private Scanner input;
 	private String loginActual;
 	private String rolActual;
-    private static Consola consola = new Consola();
+    
     
         public ConsolaProfesor (){
             this.AC = new ProcesamientoActividad();

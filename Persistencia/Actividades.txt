@@ -1,2 +1,1 @@
-djdjdj;12;s;3;Tarea;[Ljava.lang.String;@5fa7e7ff;[];12/23/2024;[];0.0
-aksk;1;s;2;Tarea;[Ljava.lang.String;@4ccabbaa;[];12/21/23;[];0.0
+a,b;5;Emile;1;Tarea;25/11/2024;0.0

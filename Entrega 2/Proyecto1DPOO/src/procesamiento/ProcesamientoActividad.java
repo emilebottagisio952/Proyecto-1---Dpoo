@@ -347,7 +347,7 @@ public void ImprimirActividadesVarias(ArrayList<Integer> ids) {
         try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parte = line.split(","); 
+                String[] parte = line.split(";"); 
                 if (parte.length == 2) {
                     String descripcion = parte[0];
                     Integer duracion = Integer.parseInt(parte[1]);
