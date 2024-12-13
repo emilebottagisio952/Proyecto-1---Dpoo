@@ -1,19 +1,20 @@
 package procesamiento;
+import elementos.Actividad;
+import elementos.LearningPath;
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import elementos.Actividad;
-import elementos.LearningPath;
-
-import java.time.LocalDateTime;
-
 public class ProcesamientoLearningPath {
 
 	HashMap<Integer, LearningPath> learningPaths;
+	ProcesamientoActividad AC;
 	
 	public ProcesamientoLearningPath() {
+		this.AC = new ProcesamientoActividad();
+		
 	    this.learningPaths = new HashMap<>();
 	}
 	
@@ -99,9 +100,17 @@ public class ProcesamientoLearningPath {
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(archivo, true))) { 
             for (LearningPath learningPath : learningPaths.values()) {
-                writer.println(learningPath.getTitulo() + "," + learningPath.getDescripcionGeneral() + "," + learningPath.getNivelDificultad()+ "," + 
-                				learningPath.getDuracion()+ "," + learningPath.getFechaCreacion()+ "," + learningPath.getFechaModificacion()+ "," + 
-                				learningPath.getVersion() + "," + learningPath.getActividades() + "," + learningPath.getLoginCreador() ); // Guarda como login,password
+				Set<Actividad> actividades = learningPath.getActividades().keySet();
+				String res = "";
+				for (Actividad actividad : actividades){
+					if (actividad != null) {
+						res += actividad.getId() + ",";
+					}
+				}
+				
+                writer.println(learningPath.getTitulo() + ";" + learningPath.getDescripcionGeneral() + ";" + learningPath.getNivelDificultad()+ ";" + 
+                				learningPath.getDuracion()+ ";" + learningPath.getFechaCreacion()+ ";" + learningPath.getFechaModificacion()+ ";" + 
+                				learningPath.getVersion() + ";" + res + ";" + learningPath.getLoginCreador() ); // Guarda como login,password
             }
             System.out.println("Datos guardados exitosamente en " + archivo.getAbsolutePath());
         } catch (IOException e) {
@@ -120,8 +129,8 @@ public class ProcesamientoLearningPath {
         try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parte = line.split(","); 
-                if (parte.length == 2) {
+                String[] parte = line.split(";"); 
+                if (parte.length >= 9) {
                     String titulo = parte[0];
                     String descripcion = parte[1];
                     String dificultad = parte[2];
@@ -131,7 +140,15 @@ public class ProcesamientoLearningPath {
                     Integer version = Integer.parseInt(parte[6]);
                     String Actividades= parte[7];
                     String logInCreador = parte[8];
-                    learningPaths.put(learningPaths.size() + 1, new LearningPath(titulo, descripcion, dificultad, duracion, fechaCreacion, fechaModificacion, version, null, logInCreador)); // Crea un nuevo estudiante
+					HashMap<Actividad, Boolean> actividades = new HashMap<>();
+					String[] idsActividades = Actividades.split(",");
+					for (String id : idsActividades){
+						if (id != "") {
+							actividades.put(AC.GetActividad(Integer.parseInt(id)), false);
+						}
+					}
+						
+                    learningPaths.put(learningPaths.size() + 1, new LearningPath(titulo, descripcion, dificultad, duracion, fechaCreacion, fechaModificacion, version, actividades, logInCreador)); // Crea un nuevo estudiante
                 }
             }
             System.out.println("Datos cargados exitosamente desde " + archivo.getAbsolutePath() + ". Total de estudiantes: " + learningPaths.size());

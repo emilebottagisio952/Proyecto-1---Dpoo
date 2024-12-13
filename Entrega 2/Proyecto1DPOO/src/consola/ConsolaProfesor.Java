@@ -1,14 +1,14 @@
 package consola;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-
 import procesamiento.ProcesamientoActividad;
-import procesamiento.ProcesamientoProfesor;
 import procesamiento.ProcesamientoLearningPath;
+import procesamiento.ProcesamientoProfesor;
 import procesamiento.ProcesamientoRegistros;
 import procesamiento.ProcesamientoResena;
 
@@ -68,10 +68,13 @@ public class ConsolaProfesor{
 			switch (respuesta) {
 				case 1:
                     try {
+                        AC.cargarACDesdeArchivo("Actividades.txt");
+                        ConsolaEstudiante.limpiarArchivo("./Persistencia/Actividades.txt");
                         EP.cargarProfesoresDesdeArchivo("profesores.txt");
                         LPC.cargarLPDesdeArchivo("learningPaths.txt");
+                        ConsolaEstudiante.limpiarArchivo("./Persistencia/learningPaths.txt");
                         RC.cargarResenasDesdeArchivo("resenas.txt");
-                        AC.cargarACDesdeArchivo("Actividades.txt");
+                        ConsolaEstudiante.limpiarArchivo("./Persistencia/resenas.txt");
                     } catch (IOException e) {
                         System.err.println("Error al cargar los datos: " + e.getMessage());
                     }
@@ -618,6 +621,14 @@ private void IngresarProfesor() {
         } else {
              System.out.println("Contraseña incorrecta.");
         }
+    }
+}
+public static void limpiarArchivo(String rutaArchivo) {
+    try (FileWriter escritor = new FileWriter(rutaArchivo, false)) {
+        // No se escribe nada, simplemente se limpia el archivo
+        System.out.println("El contenido del archivo ha sido eliminado.");
+    } catch (IOException e) {
+        System.out.println("Error al limpiar el archivo: " + e.getMessage());
     }
 }
 }

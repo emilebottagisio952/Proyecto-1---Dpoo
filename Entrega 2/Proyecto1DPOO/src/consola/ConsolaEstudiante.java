@@ -1,8 +1,8 @@
 package consola;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
-
 import procesamiento.ProcesamientoActividad;
 import procesamiento.ProcesamientoEstudiante;
 import procesamiento.ProcesamientoLearningPath;
@@ -60,10 +60,12 @@ public class ConsolaEstudiante {
 			switch (respuesta) {
 				case 0:
 				try {
+					AC.cargarACDesdeArchivo("Actividades.txt");
 					EC.cargarEstudiantesDesdeArchivo("estudiantes.txt");
 					LPC.cargarLPDesdeArchivo("learningPaths.txt");
 					RC.cargarResenasDesdeArchivo("resenas.txt");
-					AC.cargarACDesdeArchivo("Actividades.txt");
+					ConsolaEstudiante.limpiarArchivo("./Persistencia/resenas.txt");
+
 				} catch (IOException e) {
 					System.err.println("Error al cargar los datos: " + e.getMessage());
 				}
@@ -173,8 +175,15 @@ public class ConsolaEstudiante {
     }
     private void SalvarDatos() throws IOException {
 		EC.guardarEstudiantesEnArchivo("estudiantes.txt");
-		LPC.guardarLPEnArchivo("learningPaths.txt");
 		RC.guardarResenasEnArchivo("resenas.txt");
-		AC.guardarActividadesEnArchivo("Actividades.txt");
+		
 	}
+	public static void limpiarArchivo(String rutaArchivo) {
+        try (FileWriter escritor = new FileWriter(rutaArchivo, false)) {
+            // No se escribe nada, simplemente se limpia el archivo
+            System.out.println("El contenido del archivo ha sido eliminado.");
+        } catch (IOException e) {
+            System.out.println("Error al limpiar el archivo: " + e.getMessage());
+        }
+    }
 }

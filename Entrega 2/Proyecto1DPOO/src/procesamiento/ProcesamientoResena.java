@@ -1,10 +1,8 @@
 package procesamiento;
 
-import java.util.ArrayList;
-
 import elementos.Resena;
-
 import java.io.*;
+import java.util.ArrayList;
 
 public class ProcesamientoResena {
 
@@ -57,55 +55,53 @@ public class ProcesamientoResena {
 		return 0;
 	}
 	
-    // Método para guardar reseñas en un archivo
     public void guardarResenasEnArchivo(String nombreArchivo) throws IOException {
-        String directorioRelativo = "Persistencia";
+        String directorioRelativo = "Persistencia"; 
         File directorio = new File(directorioRelativo);
-
-        // Asegúrate de que el directorio existe
+        
         if (!directorio.exists()) {
-            directorio.mkdirs(); // Crea el directorio si no existe
+            directorio.mkdirs(); 
         }
 
-        // Crea el archivo en la ruta deseada con extensión .txt
-        File archivo = new File(directorio, nombreArchivo + ".txt");
+        File archivo = new File(directorio, nombreArchivo); 
 
-        try (PrintWriter writer = new PrintWriter(new FileWriter(archivo))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(archivo, true))) { 
             for (Resena resena : resenas) {
-                writer.printf("%d,%s,%d,%s,%s%n", resena.getIdActividad(), resena.getOpinion(), 
-                              resena.getRating(), resena.getLoginAutor(), resena.getRolAutor());
+                writer.println(resena.getIdActividad() + ";" + resena.getOpinion() + ";" + resena.getRating() + ";" + resena.getLoginAutor() + ";" + resena.getRolAutor()); // Guarda como login,password
             }
-            System.out.println("Reseñas guardadas exitosamente en " + archivo.getAbsolutePath());
+            System.out.println("Datos guardados exitosamente en " + archivo.getAbsolutePath());
         } catch (IOException e) {
-            System.err.println("Error al guardar las reseñas: " + e.getMessage());
+            System.err.println("Error al guardar los datos: " + e.getMessage());
             throw e;
         }
     }
-
-    // Método para cargar reseñas desde un archivo
     public void cargarResenasDesdeArchivo(String nombreArchivo) throws IOException {
-        String directorioRelativo = "bin/Persistencia";
-        File archivo = new File(directorioRelativo, nombreArchivo + ".txt");
+        if (resenas == null) {
+        	resenas = new ArrayList<>();
+        }
+
+        String directorioRelativo = "Persistencia"; 
+        File archivo = new File(directorioRelativo, nombreArchivo);
 
         try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] partes = line.split(","); // Divide en los atributos
-                if (partes.length == 5) {
-                    int idActividad = Integer.parseInt(partes[0]);
-                    String opinion = partes[1];
-                    int rating = Integer.parseInt(partes[2]);
-                    String loginAutor = partes[3];
-                    String rolAutor = partes[4];
-                    CrearResena(idActividad, opinion, rating, loginAutor, rolAutor); // Crea la nueva reseña
+                String[] parte = line.split(";"); 
+                if (parte.length >= 5) {
+                    Integer idActividad = Integer.parseInt(parte[0]);
+                    String opinion = parte[1];
+                    Integer rating = Integer.parseInt(parte[2]);
+                    String loginAutor = parte[3];
+                    String rolAutor = parte[4];
+                    CrearResena(idActividad, opinion, rating, loginAutor, rolAutor);
                 }
             }
-            System.out.println("Reseñas cargadas exitosamente desde " + archivo.getAbsolutePath());
+            System.out.println("Datos cargados exitosamente desde " + archivo.getAbsolutePath() + ". Total de estudiantes: " + resenas.size());
         } catch (FileNotFoundException e) {
             System.out.println("El archivo no existe. Se creará al guardar.");
         } catch (IOException e) {
-            System.err.println("Error al cargar las reseñas: " + e.getMessage());
-            throw e; // Propagar la excepción para manejarla más arriba si es necesario
+            System.err.println("Error al cargar los datos: " + e.getMessage());
+            throw e;
         }
     }
 	

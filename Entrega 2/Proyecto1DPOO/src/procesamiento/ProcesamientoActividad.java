@@ -1,6 +1,10 @@
 package procesamiento;
 
 
+import elementos.Actividad;
+import elementos.Opcion;
+import elementos.PreguntaAbierta;
+import elementos.PreguntaMultiple;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,18 +12,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-
-import elementos.Actividad;
-import elementos.Estudiante;
-import elementos.LearningPath;
-import elementos.Opcion;
-import elementos.PreguntaAbierta;
-import elementos.PreguntaMultiple;
 
 public class ProcesamientoActividad {
 	
@@ -73,43 +69,7 @@ public class ProcesamientoActividad {
 		return false;
 	}
 
-		public void cargarACDesdeArchivo(String nombreArchivo) throws IOException {
-		String directorioRelativo = "Persistencia";
-		File archivo = new File(directorioRelativo, nombreArchivo);
-	
-		if (!archivo.exists()) {
-			System.err.println("El archivo especificado no existe: " + archivo.getAbsolutePath());
-			return;
-		}
-	
-		try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
-			String linea;
-			while ((linea = br.readLine()) != null) {
-				String[] partes = linea.split(";");
-				if (partes.length >= 10) {
-					String descripcion = partes[0].trim();
-					int duracion = Integer.parseInt(partes[1].trim());
-					String loginCreador = partes[2].trim();
-					String nivelDificultad = partes[3].trim();
-					String tipo = partes[4].trim();
-					String[] objetivos = partes[5].trim().split(",");
-					List<Actividad> actividadesPrevias = GetActividades(parseIds(partes[6].trim()));
-					String fechaLimite = partes[7].trim();
-					List<Actividad> actividadesSeguimiento = GetActividades(parseIds(partes[8].trim()));
-					float notaMinima = Float.parseFloat(partes[9].trim());
-	
-					Actividad actividad = new Actividad(loginCreador, actividades.size() + 1, tipo, descripcion, objetivos, nivelDificultad, duracion, 
-							actividadesPrevias, fechaLimite, actividadesSeguimiento, null, null, null, notaMinima);
-					actividades.put(actividad.getId(), actividad);
-				} else {
-					System.err.println("Línea inválida: " + linea);
-				}
-			}
-		} catch (IOException e) {
-			System.err.println("Error al leer el archivo: " + e.getMessage());
-			throw e;
-		}
-	}
+		
 	
 	private List<Integer> parseIds(String idsString) {
 		List<Integer> ids = new ArrayList<>();
@@ -336,7 +296,7 @@ public void ImprimirActividadesVarias(ArrayList<Integer> ids) {
 			throw e;
 		}
 	}
-	 public void cargarLPDesdeArchivo(String nombreArchivo) throws IOException {
+	 public void cargarACDesdeArchivo(String nombreArchivo) throws IOException {
         if (actividades == null) {
         	actividades = new HashMap<>();
         }
@@ -348,7 +308,7 @@ public void ImprimirActividadesVarias(ArrayList<Integer> ids) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parte = line.split(";"); 
-                if (parte.length == 2) {
+                if (parte.length >= 7) {
                     String descripcion = parte[0];
                     Integer duracion = Integer.parseInt(parte[1]);
 					String logInCreador = parte[2];
@@ -356,21 +316,27 @@ public void ImprimirActividadesVarias(ArrayList<Integer> ids) {
 					String tipo = parte[4];
 					String fecha = parte[5];
 					float notaMinima = Float.parseFloat(parte[6]);
+					String objetivos = "a,b,c,d";
+					List<Integer> idActividadesPrevias = new ArrayList<>();
+					List<Integer> idActividadesSeguimiento = new ArrayList<>();
+					List<String> preguntas = new ArrayList<>();
+					HashMap<String, HashMap<String, String>> preguntasMultiples = new HashMap<>();
+					List<Integer> correctas = new ArrayList<>();
 					switch (tipo) {
 						case "Tarea":
-							CrearActividadTarea(logInCreador,tipo,descripcion,null,dificultad,duracion,null,fecha,null);
+							CrearActividadTarea(logInCreador,tipo,descripcion,objetivos,dificultad,duracion,idActividadesPrevias,fecha,idActividadesSeguimiento);
 							break;
 						case "RecursoEducativo":
-							CrearActividadRecurso(logInCreador,tipo,descripcion,null,dificultad,duracion,null,fecha,null,"");
+							CrearActividadRecurso(logInCreador,tipo,descripcion,objetivos,dificultad,duracion,idActividadesPrevias,fecha,idActividadesSeguimiento,"");
 							break;
 						case "Encuesta":
-							CrearActividadEncuesta(logInCreador,tipo,descripcion,null,dificultad,duracion,null,fecha,null,null);
+							CrearActividadEncuesta(logInCreador,tipo,descripcion,objetivos,dificultad,duracion,idActividadesPrevias,fecha,idActividadesSeguimiento,preguntas);
 							break;
 						case "Quiz":
-							CrearActividadQuiz(logInCreador,tipo,descripcion,null,dificultad,duracion,null,fecha,null,null,null,notaMinima);
+							CrearActividadQuiz(logInCreador,tipo,descripcion,objetivos,dificultad,duracion,idActividadesPrevias,fecha,idActividadesSeguimiento,preguntasMultiples,correctas,notaMinima);
 							break;
 						case "Examen":
-							CrearActividadExamen(logInCreador,tipo,descripcion,null,dificultad,duracion,null,fecha,null,null,notaMinima);
+							CrearActividadExamen(logInCreador,tipo,descripcion,objetivos,dificultad,duracion,idActividadesPrevias,fecha,idActividadesSeguimiento,preguntas,notaMinima);
 							break;
 					}
                     
